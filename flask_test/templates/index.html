@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Flask Sample</title>
+</head>
+<body>
+  <h1>点数入力</h1>
+  <form method="post">
+    <input type="number" name="score">
+    <button type="submit">送信</button>
+  </form>
+
+  {% if result %}
+    <p>結果：{{ result }}</p>
+  {% endif %}
+</body>
+</html>
