@@ -1,11 +1,12 @@
 import csv
 import random
 
-# Selecta subject
+# Selecta subject 問題を選択式にし、読み込みファイルを変えるため
 print("Which subuject do you learn ?")
 print('1:kanji  2:english  3:electric 4:wrong_kanji 5:wrong_english')
 file_number = input("Select subject")
 
+# 選ばれた番号によって、呼び出すファイルを変えるため
 match file_number:
   case "1":
     filename = "kanji.csv"
@@ -21,24 +22,27 @@ match file_number:
     print("That number cannot be selected.")
     exit()
 
-# Import a csv file
+# Import a csv file 変数に入れた呼び出すファイルを使って必要なファイルを呼び出す
 with open(filename, encoding="cp932") as f:
   reader = csv.reader(f)
   data = list(reader)[1:]
 
 
-# quiz function
+# quiz function  問題を出して、解答を答える関数
 def quiz(data):
+  # 変数の指定、間違いは辞書型。まだどの間違いが出るかわからないので空白を入れてある
   wrong_dict={}
-  stats = {"total":0,"correct":0, "wrong": 0}
+  stats = {"total":0,"correct":0, "wrong": 0}  
   while True:
     question, answer = random.choice(data)
     print(f"問題:{question}")
 
+# スペースなどをなくすためにstripを入れてある。
     kotae=input("答えは？(0でおわり)").strip()
     
     match kotae:
       case "0":
+# 最後の表示を関数で行う
         show_final_result(stats,wrong_dict)
         accuracy_rate = calc_accuracy(stats)
         match accuracy_rate:
@@ -58,6 +62,7 @@ def quiz(data):
         print("No 解答は:", answer)
         stats["wrong"] += 1
 
+# 間違えた問題と回数を辞書に入れて間違い用ファイルをつくる
         if question in wrong_dict:
           wrong_dict[question]["count"] += 1
         else:
@@ -78,7 +83,11 @@ def calc_accuracy(stats):
 # display results
 def show_result(stats):
   accuracy_rate = calc_accuracy(stats)
-  print(f'今の問題数は{stats["total"]}、正解数は{stats["correct"]}個、不正解数は{stats["wrong"]}、正答率は{accuracy_rate:.1f}％です')
+  print("【結果】")
+  print(f'問題数: {stats["total"]}')
+  print(f'正解: {stats["correct"]}')
+  print(f'不正解数: {stats["wrong"]}')
+  print(f'正答率: {accuracy_rate:.1f}％')
   
 # display final results
 def show_final_result(stats,wrong_dict):
